@@ -1,9 +1,7 @@
 #!/usr/bin/env groovy
 
 node {
-    // This displays colors using the 'xterm' ansi color map.
-    ansiColor('xterm') {
-        // Just some echoes to show the ANSI color.
-        stage "\u001B[31mI'm Red\u001B[0m Now not"
-    }
+    stage "Step 1"
+    sh "mkdir -p output"
+    writeFile file: "output/usefulfile.txt", text: "This file is useful, need to archive it."
 }
