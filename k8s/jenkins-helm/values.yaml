@@ -1,0 +1,67 @@
+master:
+  componentName: "jenkins-master"
+  image: "jenkins/jenkins"
+  imageTag: "lts-alpine"
+  imagePullPolicy: "Always"
+  adminUser: admin
+  # comment out password to default to random
+  adminPassword: admin
+  resources:
+    requests:
+      cpu: "1"
+      memory: "1024Mi"
+    limits:
+      cpu: "2"
+      memory: "4096Mi"
+  javaOpts: "-Duser.timezone=America/Chicago"
+  # JavaOpts: "-Xms512m -Xmx512m" - Configure default heap size limits to match resource claims
+  # JenkinsOpts: ""
+  servicePort: 8080
+  serviceType: LoadBalancer
+  installPlugins:
+    - kubernetes:1.15.2
+    - kubernetes-cd:0.2.3
+    - kubernetes-pipeline-steps:1.6
+    - workflow-job:2.32
+    - workflow-aggregator:2.6
+    - credentials-binding:1.18
+    - git:3.9.4
+    - blueocean:1.15.1
+    - rocketchatnotifier:1.4.3
+    - ldap:1.20
+    - docker-commons:1.14
+    - docker-workflow:1.18
+    - active-directory:2.13
+    - matrix-project:1.14
+    - email-ext:2.66
+    - mailer:1.23
+    - saferestart:0.3
+    - htmlpublisher:1.18
+    - ws-cleanup:0.37
+    - matrix-auth:2.4.1
+    - role-strategy:2.10
+    - git-client:2.7.7
+    - github:1.29.4
+    - github-api:1.95
+    - github-branch-source:2.5.0
+    - junit:1.27
+
+  ingress:
+    enabled: false
+
+agent:
+  enabled: true
+  image: jenkins/jnlp-slave
+  imageTag: alpine
+  alwaysPullImage: false
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1"
+      memory: "2048Mi"
+
+persistence:
+  enabled: true
+  existingClaim: "jenkins-pv-claim"
